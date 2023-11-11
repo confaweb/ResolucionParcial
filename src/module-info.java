@@ -1,0 +1,9 @@
+/**
+ * 
+ */
+/**
+ * 
+ */
+module ResolucionParcial {
+	requires junit;
+}
