@@ -1,10 +1,12 @@
 package ar.edu.unlam.Dominio;
 
+import java.util.Objects;
+
 public class Producto implements Vendible {
 
 	private String codigoProducto;
 	private String descripcion;
-	private double precio;
+	private Double precio;
 	private Integer stock;
 
 	public Producto(String codigoProducto, String descripcion, double precio) {
@@ -48,6 +50,24 @@ public class Producto implements Vendible {
 	public void setPrecio(double precio) {
 		this.precio = precio;
 	}
+
+	@Override
+	public int hashCode() {
+		return Objects.hash(codigoProducto);
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Producto other = (Producto) obj;
+		return Objects.equals(codigoProducto, other.codigoProducto);
+	}
+	
 	
 
 }
