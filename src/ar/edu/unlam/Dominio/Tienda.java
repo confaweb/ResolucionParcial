@@ -112,37 +112,39 @@ public class Tienda {
 	}
 
 	public void agregarProducto(Producto producto, Integer stockInicial) throws VendibleInexistenteException {
-		if (this.productos.contains(producto))
-			producto.setStock(stockInicial);
-		throw new VendibleInexistenteException("Producto no disponible para la venta");
-	}
-	
-	public Venta agregarProductoAVenta(String numTicket, Producto producto, Integer cantidadVendida) throws VentaInexistenteException, StockInsuficienteException {
-		for(Venta ticket:libroVentas)
-			if(ticket.getNumTicket().equals(numTicket)&& checkStock(producto, cantidadVendida)==true) {
-				ticket.setProducto(producto);
-				actualizarStock(producto,cantidadVendida);
-				
-				return ticket;
-			}
-				
-			throw new VentaInexistenteException("La venta no existe. Primero debe generar una venta para agregar un producto a la misma");
-	}
-	private Integer actualizarStock(Producto producto, Integer cantidadVendida) {
-		Integer stockActual=producto.getStock()-cantidadVendida;
-		return stockActual;
-		
+		this.agregarProducto(producto);
+		this.agregarStock(producto, stockInicial);
+
 	}
 
-	private boolean checkStock(Producto producto,Integer cantidadVendida) throws StockInsuficienteException{
-		Boolean stockSuficiente=false;
-		if(producto.getStock()>=cantidadVendida) {
-			stockSuficiente=true;
+	public Venta agregarProductoAVenta(String numTicket, Producto producto, Integer cantidadVendida)
+			throws VentaInexistenteException, StockInsuficienteException {
+		for (Venta ticket : libroVentas)
+			if (ticket.getNumTicket().equals(numTicket) && checkStock(producto, cantidadVendida) == true) {
+				ticket.setProducto(producto);
+				actualizarStock(producto, cantidadVendida);
+				return ticket;
+			}
+
+		throw new VentaInexistenteException(
+				"La venta no existe. Primero debe generar una venta para agregar un producto a la misma");
+	}
+
+	private void actualizarStock(Producto producto, Integer cantidadVendida) {
+		Integer stockActual = producto.getStock() - cantidadVendida;
+		producto.setStock(stockActual);
+
+	}
+
+	private boolean checkStock(Producto producto, Integer cantidadVendida) throws StockInsuficienteException {
+		Boolean stockSuficiente = false;
+		if (producto.getStock() >= cantidadVendida) {
+			stockSuficiente = true;
 			return stockSuficiente;
 		}
-			
+
 		throw new StockInsuficienteException("Stock insuficiente para cantidad solicitada");
-		
+
 	}
 
 	@Override
@@ -161,7 +163,5 @@ public class Tienda {
 		Tienda other = (Tienda) obj;
 		return Objects.equals(cuitTienda1, other.cuitTienda1);
 	}
-
-
 
 }

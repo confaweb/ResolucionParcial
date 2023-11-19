@@ -6,6 +6,8 @@ package Testing;
 	import static org.junit.Assert.assertTrue;
 
 	import org.junit.Test;
+	import org.junit.Rule;
+import org.junit.rules.ExpectedException;
 
 import ar.edu.unlam.Dominio.Cliente;
 import ar.edu.unlam.Dominio.Producto;
@@ -120,7 +122,9 @@ import ar.edu.unlam.Exception.VentaInexistenteException;
 			String dniEjemplo = "12345678";
 			Vendedor vendedor = new Vendedor (dniEjemplo, "Vendedor de ejemplo");
 			Producto producto = new Producto("1", "Producto nuevo", 100d);
+			
 			Integer stockInicial = 10;
+			producto.setStock(0);
 			tienda.agregarProducto( producto, stockInicial);
 			Venta ticket = new Venta("C-0001", cliente, vendedor);
 			tienda.agregarVenta(ticket);
@@ -131,7 +135,49 @@ import ar.edu.unlam.Exception.VentaInexistenteException;
 			assertEquals(stockEsperado, stockActual);
 
 		}
-/*
+		/*
+		 @Rule
+		    public ExpectedException thrown = ExpectedException.none();
+
+		    @Test
+		   
+
+		public void queSePuedaHacerUnaVentaDeUnProductoLanzandoExcepyions() throws VentaInexistenteException, VendibleInexistenteException, StockInsuficienteException {
+			thrown.expect(VendedorInexistenteException.class);
+	        thrown.expect(VendibleInexistenteException.class);
+	        thrown.expect(StockInsuficienteException.class);
+			Tienda tienda = new Tienda("30123456780", "Tienda de ejemplo");
+			String cuitCliente = "30123456780";
+			Cliente cliente = new Cliente(cuitCliente, "Cliente de ejemplo");
+			tienda.agregarCliente(cliente);
+			String dniEjemplo = "12345678";
+			String dniEjemplo1="12345671";
+			
+			Vendedor vendedor = new Vendedor (dniEjemplo, "Vendedor de ejemplo");			
+			Vendedor vendedor1 = new Vendedor (dniEjemplo1, "Vendedor de ejemplo1");		;
+			
+			Producto producto = new Producto("1", "Producto nuevo", 100d);
+			Producto producto1 = new Producto("11", "Producto nuevo1", 101d);
+			
+			
+			Integer stockInicial = 10;
+			Integer stockInicial1 = 2;
+			
+			producto.setStock(0);
+			tienda.agregarProducto( producto1, stockInicial1);
+			
+			Venta ticket = new Venta("C-0001", cliente, vendedor);
+			Venta ticket1 = new Venta("C-0002", cliente, vendedor);
+			
+			tienda.agregarVenta(ticket1);
+			Integer cantidadVendida = 5;
+			tienda.agregarProductoAVenta(ticket.getNumTicket(), (Producto) producto, cantidadVendida);
+			Integer stockEsperado = 5;
+			Integer stockActual = tienda.getStock((Producto) producto);
+			assertEquals(stockEsperado, stockActual);
+
+		}
+
 
 		@Test (expected = StockInsuficienteException.class)
 		public void queNoSePuedaAgregarUnaVentaPorStockInsuficiente() throws VentaInexistenteException, VendibleInexistenteException, StockInsuficienteException {
